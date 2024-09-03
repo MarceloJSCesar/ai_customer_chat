@@ -5,6 +5,23 @@ import { useRouter } from 'next/navigation';
 import CustomTextField from './components/custom_textfield';
 import EmailJS, { send } from '@emailjs/browser';
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIfMobile = () => setIsMobile(window.matchMedia('(max-width: 600px)').matches);
+
+    checkIfMobile(); // Initial check
+    window.addEventListener('resize', checkIfMobile); // Update on resize
+
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
+
+  return isMobile;
+}
+
 export default function InquiryNow() {
 
     // fields parameters value
@@ -44,21 +61,7 @@ export default function InquiryNow() {
 
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(true);
-
-    useEffect(() => {
-      setIsMobile(window.innerWidth <= 767);
-      console.log('isMobile', isMobile);
-        const handleResize = () => {
-          setIsMobile(window.innerWidth <= 767);
-        };
-    
-        window.addEventListener('resize', handleResize);
-    
-        return () => {
-          window.removeEventListener('resize', handleResize);
-        };
-      }, []);
+    const isMobile = useIsMobile();
 
     return (
     <Box

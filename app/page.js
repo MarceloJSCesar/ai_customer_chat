@@ -4,27 +4,31 @@ import {Box, Stack, TextField, Button, Typography} from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 // useRouter
 import { useRouter } from 'next/navigation'
- 
 
-export default function Home() {
-  const router = useRouter()
-
-  const [limit, setLimit] = useState(0);
-
+function useIsMobile() {
   const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth <= 767);
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 767);
-    };
+    const checkIfMobile = () => setIsMobile(window.matchMedia('(max-width: 600px)').matches);
 
-    window.addEventListener('resize', handleResize);
+    checkIfMobile(); // Initial check
+    window.addEventListener('resize', checkIfMobile); // Update on resize
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', checkIfMobile);
     };
   }, []);
+
+  return isMobile;
+}
+ 
+
+export default function Home() {
+  const isMobile = useIsMobile();
+
+  const router = useRouter()
+
+  const [limit, setLimit] = useState(0);
 
   const [canTry, setCanTry] = useState(false);
 
