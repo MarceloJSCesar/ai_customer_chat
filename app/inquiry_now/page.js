@@ -22,9 +22,9 @@ export default function InquiryNow() {
     };  
 
     function sendMessage() {
-      console.log('publickey: ', process.env.EMAILJS_API_KEY);
+      console.log('publickey: ', process.env.NEXT_PUBLIC_EMAILJS_API_KEY);
       EmailJS.send('service_3p9jcq7', 'template_2c1wbyq', templateParams, {
-          publicKey: process.env.EMAILJS_API_KEY,
+          publicKey: process.env.NEXT_PUBLIC_EMAILJS_API_KEY,
       })
       .then(
           () => {
