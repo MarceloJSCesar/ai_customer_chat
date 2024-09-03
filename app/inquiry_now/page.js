@@ -42,13 +42,11 @@ export default function InquiryNow() {
 
     function sendMessage() {
       if (name.length > 0 && email.length > 0 && subject.length > 0 && message.length > 0) {
-        console.log('publickey: ', process.env.NEXT_PUBLIC_EMAILJS_API_KEY);
       EmailJS.send('service_3p9jcq7', 'template_2c1wbyq', templateParams, {
           publicKey: process.env.NEXT_PUBLIC_EMAILJS_API_KEY,
       })
       .then(
           () => {
-              console.log('success');
               setSendMessageResponse('success');
               setName('');
               setEmail('');
@@ -56,7 +54,6 @@ export default function InquiryNow() {
               setMessage('');
           },
           (error) => {
-              console.log('error', error);
               setSendMessageResponse('error');
           }
         )
