@@ -255,7 +255,7 @@ export default function Home() {
                 <Button
                     variant="outlined"
                     onClick={() => {
-                      canShowChat()
+                      router.push("/inquiry_now")
                       // send to another page and fill out the blanks then it suposes to send an email
                     }}
                     >
