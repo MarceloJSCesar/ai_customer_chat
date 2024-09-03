@@ -42,7 +42,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Hi I'm Implement AI assistant. How can I assist you today?`,
+      content: `Hi I'm Implement.AI assistant. How can I assist you today?`,
     }
   ]);
 
@@ -173,7 +173,7 @@ export default function Home() {
             color="white"
             display="flex"
             flex={3}
-          >Implement AI</Typography>
+          >Implement.AI</Typography>
         <Box
             marginRight={4}
             gap={2}
@@ -217,7 +217,7 @@ export default function Home() {
                     variant={isMobile ? "h5" : "h2"}
                     color="white"
                   >
-                    Implement AI Chat Assistant specialized for your business within minutes.
+                    Implement.AI Chat Assistant specialized for your business within minutes.
                   </Typography>
                 </Box>
                 <Box
@@ -241,7 +241,7 @@ export default function Home() {
                 alignItems="center"
                 textAlign="center"
               >
-                <Typography variant="h7" color="white">Copyright © 2024 Implement AI. All rights reserved.</Typography>
+                <Typography variant="h7" color="white">Copyright © 2024 Implement.AI. All rights reserved.</Typography>
               </Box>
             </Box>
           <Box

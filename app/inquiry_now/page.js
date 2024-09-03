@@ -96,7 +96,7 @@ export default function InquiryNow() {
                 color="white"
                 display="flex"
                 flex={3}
-                >Implement AI
+                >Implement.AI
             </Typography>
             <Box
                 marginRight={4}
