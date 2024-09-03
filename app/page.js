@@ -1,10 +1,13 @@
 'use client'
-import Image from "next/image";
 import {useState, useEffect} from 'react';
 import {Box, Stack, TextField, Button, Typography} from '@mui/material';
 import ReactMarkdown from 'react-markdown';
+// useRouter
+import { useRouter } from 'next/navigation'
+ 
 
 export default function Home() {
+  const router = useRouter()
 
   const [limit, setLimit] = useState(0);
 
@@ -110,11 +113,12 @@ export default function Home() {
         <Button
           variant="outlined"
           onClick={() => {
-            canShowChat()
+            // canShowChat()
+            router.push("/inquiry_now")
             // send to another page and fill out the blanks then it suposes to send an email
           }}
         >
-          Inquiry Now
+        Inquiry Now
         </Button>
        </Box>
       </Box>
@@ -145,7 +149,7 @@ export default function Home() {
                   variant={isMobile ? "h5" : "h2"}
                   color="white"
                 >
-                  Implement AI Chat Assistant specially for your business within minutes.
+                  Implement AI Chat Assistant specialized for your business within minutes.
                 </Typography>
               </Box>
               <Box
@@ -154,7 +158,7 @@ export default function Home() {
               >
                 <Box
                   marginLeft={4}
-                  marginTop={6}
+                  marginTop={4}
                 >
                   <Button variant="contained" onClick={() => {
                     canShowChat();
