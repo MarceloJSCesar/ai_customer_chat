@@ -73,6 +73,18 @@ export default function InquiryNow() {
       flexDirection="column"
       bgcolor="black"
     >
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=G-${process.env.NEXT_PUBLIC_GTAG_API_KEY}`}/>
+        <script dangerouslySetInnerHTML={
+        {
+          __html: `  
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', '${process.env.NEXT_PUBLIC_GTAG_API_KEY}');
+          `
+        }
+        } />
         <Box
         width="100vw"
         height="10vh"
