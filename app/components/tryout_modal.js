@@ -52,7 +52,7 @@ export default function TryOutModal({
                   bgcolor: 'white'
                 }}
               />
-              <Button variant='contained' onClick={tryNow}>Try Now</Button>
+              <Button variant='contained' onClick={tryNow}>Get Started</Button>
             </Box>
         </Modal>
     );
