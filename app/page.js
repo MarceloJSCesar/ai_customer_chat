@@ -217,7 +217,7 @@ export default function Home() {
                     variant={isMobile ? "h5" : "h2"}
                     color="white"
                   >
-                    Implement.AI Chat Assistant specialized for your business within minutes.
+                    Implement AI Chat Assistant specialized for your business within minutes.
                   </Typography>
                 </Box>
                 <Box
