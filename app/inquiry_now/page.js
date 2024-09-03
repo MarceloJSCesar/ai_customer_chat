@@ -9,14 +9,16 @@ function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkIfMobile = () => setIsMobile(window.matchMedia('(max-width: 600px)').matches);
+    if (typeof window !== 'undefined') {
+      const checkIfMobile = () => setIsMobile(window.matchMedia('(max-width: 600px)').matches);
 
-    checkIfMobile(); // Initial check
-    window.addEventListener('resize', checkIfMobile); // Update on resize
+      checkIfMobile(); // Initial check
+      window.addEventListener('resize', checkIfMobile); // Update on resize
 
-    return () => {
-      window.removeEventListener('resize', checkIfMobile);
-    };
+      return () => {
+        window.removeEventListener('resize', checkIfMobile);
+      };
+    }
   }, []);
 
   return isMobile;
