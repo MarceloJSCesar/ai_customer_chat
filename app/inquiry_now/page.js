@@ -41,7 +41,8 @@ export default function InquiryNow() {
     };  
 
     function sendMessage() {
-      console.log('publickey: ', process.env.NEXT_PUBLIC_EMAILJS_API_KEY);
+      if (name.length > 0 && email.length > 0 && subject.length > 0 && message.length > 0) {
+        console.log('publickey: ', process.env.NEXT_PUBLIC_EMAILJS_API_KEY);
       EmailJS.send('service_3p9jcq7', 'template_2c1wbyq', templateParams, {
           publicKey: process.env.NEXT_PUBLIC_EMAILJS_API_KEY,
       })
@@ -58,7 +59,8 @@ export default function InquiryNow() {
               console.log('error', error);
               setSendMessageResponse('error');
           }
-      )
+        )
+      }
   }
 
     const router = useRouter();

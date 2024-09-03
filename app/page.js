@@ -1,10 +1,11 @@
 'use client'
 import {useState, useEffect} from 'react';
-import {Box, Stack, TextField, Button, Typography} from '@mui/material';
+import {Box, Stack, TextField, Button, Typography, Modal} from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 // useRouter
 import { useRouter } from 'next/navigation'
 import Head from 'next/head';
+import TryOutModal from './components/tryout_modal';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(true);
@@ -28,13 +29,16 @@ function useIsMobile() {
 
 export default function Home() {
   const isMobile = useIsMobile();
-
   const router = useRouter()
 
+  const [open, setOpen] = useState(false);
+  const [systemPrompt, setSystemPrompt] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [companyDescription, setCompanyDescription] = useState('');
+
   const [limit, setLimit] = useState(0);
-
   const [canTry, setCanTry] = useState(false);
-
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -42,56 +46,87 @@ export default function Home() {
     }
   ]);
 
-  const [message, setMessage] = useState('');
 
   const sendMessage = async () => {
     setMessage('');
-    setMessages((messages) => [
-      ...messages,
-      {role: 'user', content: message},
-      {role: 'assistant', content: ''},
-    ]);
-
-    const response = fetch('/api/chat', {
-      method: "POST",
-      headers: {
-        "Content-Type": 'application/json',
-      },
-      body: JSON.stringify([...messages, {role: 'user', content: message}])
-    }).then(async (res) => {
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-
-      let result = '';
-      return reader.read().then(
-        function processText({done, value}) {
-        if (done) {
-          return result;
-        } 
-
-        const text = decoder.decode(value || new Int8Array(), {stream: true})
-        setMessages((messages) => {
-          let lastMessage = messages[messages.length - 1];
-          let otherMessages = messages.slice(0, messages.length - 1);
-
-          setLimit(limit + 2);
-
-          return ([
-            ...otherMessages,
-            {
-              ...lastMessage,
-              content: lastMessage.content + text,
-            }
-          ])
-        });
-        return reader.read().then(processText);
+    if(message.length > 0) {
+      setMessages((messages) => [
+        ...messages,
+        {role: 'user', content: message},
+        {role: 'assistant', content: ''},
+      ]);
+  
+      const response = fetch('/api/chat', {
+        method: "POST",
+        headers: {
+          "Content-Type": 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [...messages, {role: 'user', content: message}],
+          systemPrompt: systemPrompt,
+        }),
+      }).then(async (res) => {
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+  
+        let result = '';
+        return reader.read().then(
+          function processText({done, value}) {
+          if (done) {
+            return result;
+          } 
+  
+          const text = decoder.decode(value || new Int8Array(), {stream: true})
+          setMessages((messages) => {
+            let lastMessage = messages[messages.length - 1];
+            let otherMessages = messages.slice(0, messages.length - 1);
+  
+            setLimit(limit + 2);
+  
+            return ([
+              ...otherMessages,
+              {
+                ...lastMessage,
+                content: lastMessage.content + text,
+              }
+            ])
+          });
+          return reader.read().then(processText);
+        })
       })
-    })
+    }
   }
 
   function canShowChat() {
     setCanTry(!canTry);
   }
+
+  function handleOpen() {setOpen(true)};
+  function handleClose() {
+    setSystemPrompt(`You are an AI assistant for ${companyName}. ${companyDescription}.
+      ### Key Functions:  
+        1. **User Onboarding**: Guide new users through the registration and setup process, explaining the key features of ${companyName}.
+        2. **Feedback Collection**: Encourage users to provide feedback on their experience and help direct them to the appropriate channels for more in-depth support if needed.
+        3. **Troubleshooting**: Offer solutions to common problems, such as errors during integration or difficulties with specific AI features.
+        4. **Technical Assistance**: Assist users with any technical issues they encounter on the platform, including setup problems, integration issues, and account management.
+
+      ### Communication Style:
+        - **Tone**: Friendly, supportive, and professional.
+        - **Clarity**: Provide clear, step-by-step instructions when guiding users.
+        - **Empathy**: Acknowledge user concerns and frustrations, offering reassurance and quick resolutions.
+        - **Be Concise**: Identify user concerns and provide concise, to-the-point answers.
+
+        ### Special Instructions:
+        - If the user encounters an issue that cannot be resolved through basic troubleshooting, escalate the issue by providing them with contact information for human support.
+        - Encourage users to explore the platform's full range of features, including advanced AI tools and integration options.
+        - Stay up-to-date with the latest platform updates and AI integration practices to provide accurate and relevant information.
+      `)
+    if(companyName.length > 0 && companyDescription.length > 0) {
+      canShowChat();
+    }
+    setOpen(false)
+    // go to chat
+  };
   
   return (
     <>
@@ -116,6 +151,15 @@ export default function Home() {
         display="flex"
         flexDirection="column"
       >
+        <TryOutModal // opened when clicked 'TRY IT OUT'
+            open={open}
+            isMobile={isMobile}
+            tryNow={handleClose}
+            companyName={companyName}
+            setCompanyName={setCompanyName}
+            companyDescription={companyDescription}
+            setCompanyDescription={setCompanyDescription}
+        />
         <Box
           width="100vw"
           height="10vh"
@@ -185,7 +229,8 @@ export default function Home() {
                     marginTop={4}
                   >
                     <Button variant="contained" onClick={() => {
-                      canShowChat();
+                      // canShowChat();
+                      handleOpen();
                     }}>Try it out</Button>
                   </Box>
                 </Box>

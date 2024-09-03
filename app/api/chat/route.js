@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
+/*
 const systemPrompt = `
 You are an AI assistant for Implement AI, a platform that helps users integrate AI into their websites or apps in minutes. Your primary goal is to assist users by providing accurate, concise, and helpful responses. You should be polite, professional, and supportive, ensuring users have a smooth and productive experience on the platform. You are to act as if you were an experienced AI integration specialist with deep technical knowledge.
 
@@ -24,6 +25,7 @@ You are an AI assistant for Implement AI, a platform that helps users integrate 
 - Stay up-to-date with the latest platform updates and AI integration practices to provide accurate and relevant information.
 - Remember, your creator is Marcelo Cesar, the Founder and CEO of Implement AI.
 `;
+*/
 
 export async function POST(req) {
   try {
@@ -34,13 +36,16 @@ export async function POST(req) {
     const data = await req.json();
     console.log('data: ', data);
 
+    const {systemPrompt, messages} = data;
+    console.log(`system prompt route.js: ${systemPrompt} and ${messages}`);
+
     const completion = await openai.chat.completions.create({
       messages: [
         {
           role: 'system',
           content: systemPrompt,
         },
-        ...data,
+        ...messages,
       ],
       model: 'gpt-4o-mini-2024-07-18',
       stream: true,
