@@ -74,7 +74,7 @@ export async function POST(req) {
 
 /*
 
-  let business insert any data about their business then give systemPrompt based on the provided data and let them try it out live in a chat. set only 4 questions.
+  when clicked "INQUIRY NOW" let users insert any data about their business then give systemPrompt based on the provided data and let them try it out live in a chat. set only 4 questions.
   if you want to try more, show option to contact the team.
 
 */
