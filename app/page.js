@@ -186,7 +186,7 @@ export default function Home() {
               // send to another page and fill out the blanks then it suposes to send an email
             }}
           >
-          Inquiry Now
+          Inquire Now
           </Button>
         </Box>
         </Box>
@@ -321,7 +321,7 @@ export default function Home() {
                         // send to another page and fill out the blanks then it suposes to send an email
                       }}
                       >
-                      Inquiry Now
+                      Inquire Now
                   </Button>
             </Box>
             </Stack>
